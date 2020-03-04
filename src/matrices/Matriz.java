@@ -65,4 +65,45 @@ public class Matriz {
         ret += "]\n";
         return ret;
     }
+    
+    public static double determinante(Matriz matriz)
+    {
+        double det;
+        if(matriz.datos.length==2)
+        {
+            det=(matriz.datos[0][0]*matriz.datos[1][1])-(matriz.datos[1][0]*matriz.datos[0][1]);
+            return det;
+        }
+        double suma=0;
+        for(int i=0; i<matriz.datos.length; i++){  
+        Matriz nm=new Matriz(matriz.datos.length-1,matriz.datos.length-1,false);
+            for(int j=0; j<matriz.datos.length; j++){
+                if(j!=i){
+                    for(int k=1; k<matriz.datos.length; k++){
+                    	int indice=-1;
+	                    if(j<i) {
+	                    	indice=j;
+	                    } else if(j>i) {
+	                    	indice=j-1;
+	                    }
+	                    nm.datos[indice][k-1]=matriz.datos[j][k];
+                    }
+                }
+            }
+            if(i%2==0) {
+                suma+=matriz.datos[i][0] * determinante(nm);
+            } else {
+            	suma-=matriz.datos[i][0] * determinante(nm);
+            }
+        }
+        return suma;
+    }
+    
+    
+    public static Matriz matrizInversa(Matriz matriz) {
+        double det=1/determinante(matriz);
+        Matriz nmatriz=matrizAdjunta(matriz);
+        multiplicarMatriz(det,nmatriz);
+        return nmatriz;
+    }
 }
